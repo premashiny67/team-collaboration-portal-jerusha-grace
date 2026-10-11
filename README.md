@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Team Collaboration Portal — Jerusha Grace
 
 A full-stack task collaboration application built with Python, Django, Django Templates, Bootstrap, and PostgreSQL support.
@@ -114,3 +115,6 @@ Replace `YOUR_GITHUB_USERNAME` with the account that will own the repository.
 - Members can only update tasks assigned to them and cannot assign tasks or change other task fields.
 - Use HTTPS and strong environment secrets in production.
 - Before production use, configure email-based password reset, monitoring, backups, and a custom domain if required.
+=======
+# team-collaboration-portal-jerusha-grace
+>>>>>>> 30ffcd6823215a428a8e2471528393431fda568d
