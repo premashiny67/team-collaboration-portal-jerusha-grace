@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block public_content %}
+<div class="login-page">
+    <div class="login-decoration">
+        <div class="login-brand">
+            <span class="brand-mark">JG</span>
+            <span>
+                <strong>TeamSpace</strong>
+                <small>JERUSHA GRACE</small>
+            </span>
+        </div>
+
+        <div class="hero-copy">
+            <span class="eyebrow">JOIN YOUR TEAM</span>
+            <h1>Great work<br>starts <em>together.</em></h1>
+            <p>
+                Create your account and join a shared workspace
+                where teams organize tasks, collaborate, and
+                achieve more together.
+            </p>
+        </div>
+
+        <div class="decoration-orb orb-one"></div>
+        <div class="decoration-orb orb-two"></div>
+
+        <div class="login-bottom-note">
+            PLAN WITH PURPOSE. DELIVER WITH CONFIDENCE.
+        </div>
+    </div>
+
+    <div class="login-panel">
+        <div class="login-form-wrap">
+            <div class="mobile-login-brand">
+                <span class="brand-mark">JG</span>
+                <strong>TeamSpace</strong>
+            </div>
+
+            <span class="eyebrow text-accent">GET STARTED</span>
+            <h2>Create your account</h2>
+            <p class="muted-text mb-4">
+                Enter your details to join TeamSpace.
+            </p>
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    Please correct the errors below.
+                </div>
+            {% endif %}
+
+            <form method="post" class="login-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.name == "username" %}
+                                Username
+                            {% elif field.name == "first_name" %}
+                                First name
+                            {% elif field.name == "last_name" %}
+                                Last name
+                            {% elif field.name == "email" %}
+                                Email address
+                            {% elif field.name == "password1" %}
+                                Password
+                            {% elif field.name == "password2" %}
+                                Confirm password
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <div class="form-text">
+                                {{ field.help_text|safe }}
+                            </div>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <button
+                    class="btn btn-primary btn-lg w-100 mt-2"
+                    type="submit"
+                >
+                    Create account <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <p class="login-help mt-4">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign in here</a>
+            </p>
+        </div>
+
+        <div class="login-copyright">
+            TeamSpace <span>·</span> A shared space for great work
+        </div>
+    </div>
+</div>
+{% endblock %}

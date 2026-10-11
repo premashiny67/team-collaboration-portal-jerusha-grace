@@ -1,39 +1,127 @@
 {% extends "base.html" %}
+
 {% block title %}Sign in{% endblock %}
+
 {% block public_content %}
 <div class="login-page">
+
   <div class="login-decoration">
-    <div class="login-brand"><span class="brand-mark">JG</span><span><strong>TeamSpace</strong><small>JERUSHA GRACE</small></span></div>
+    <div class="login-brand">
+      <span class="brand-mark">JG</span>
+      <span>
+        <strong>TeamSpace</strong>
+        <small>JERUSHA GRACE</small>
+      </span>
+    </div>
+
     <div class="hero-copy">
       <span class="eyebrow">BETTER TOGETHER</span>
       <h1>Great work<br>happens <em>together.</em></h1>
-      <p>One calm, organized space to bring your team's work into focus, move projects forward, and celebrate progress.</p>
-      <div class="hero-stats"><div><strong>01</strong><span>One workspace</span></div><div><strong>∞</strong><span>Room to grow</span></div></div>
+      <p>
+        One calm, organized space to bring your team's work into focus,
+        move projects forward, and celebrate progress.
+      </p>
+
+      <div class="hero-stats">
+        <div>
+          <strong>01</strong>
+          <span>One workspace</span>
+        </div>
+        <div>
+          <strong>∞</strong>
+          <span>Room to grow</span>
+        </div>
+      </div>
     </div>
-    <div class="decoration-orb orb-one"></div><div class="decoration-orb orb-two"></div>
-    <div class="login-bottom-note">PLAN WITH PURPOSE. DELIVER WITH CONFIDENCE.</div>
+
+    <div class="decoration-orb orb-one"></div>
+    <div class="decoration-orb orb-two"></div>
+
+    <div class="login-bottom-note">
+      PLAN WITH PURPOSE. DELIVER WITH CONFIDENCE.
+    </div>
   </div>
+
   <div class="login-panel">
     <div class="login-form-wrap">
-      <div class="mobile-login-brand"><span class="brand-mark">JG</span><strong>TeamSpace</strong></div>
+
+      <div class="mobile-login-brand">
+        <span class="brand-mark">JG</span>
+        <strong>TeamSpace</strong>
+      </div>
+
       <span class="eyebrow text-accent">WELCOME BACK</span>
       <h2>Sign in to your workspace</h2>
-      <p class="muted-text mb-4">Enter your account details to continue.</p>
-      {% if form.errors %}<div class="alert alert-danger">Your username or password wasn't recognized. Please try again.</div>{% endif %}
-      {% if next %}<div class="alert alert-info">Please sign in to continue.</div>{% endif %}
+
+      <p class="muted-text mb-4">
+        Enter your account details to continue.
+      </p>
+
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          Your email/username or password wasn't recognized.
+          Please try again.
+        </div>
+      {% endif %}
+
+      {% if next %}
+        <div class="alert alert-info">
+          Please sign in to continue.
+        </div>
+      {% endif %}
+
       <form method="post" class="login-form">
         {% csrf_token %}
+
         <input type="hidden" name="next" value="{{ next }}">
-        <label for="id_username">Username</label>
-        <input class="form-control form-control-lg" type="text" name="username" id="id_username" autocomplete="username" placeholder="Enter your username" required autofocus>
+
+        <label for="id_username">Email address or username</label>
+        <input
+          class="form-control form-control-lg"
+          type="text"
+          name="username"
+          id="id_username"
+          autocomplete="username"
+          placeholder="Enter your email or username"
+          required
+          autofocus
+        >
+
         <label for="id_password" class="mt-3">Password</label>
-        <input class="form-control form-control-lg" type="password" name="password" id="id_password" autocomplete="current-password" placeholder="Enter your password" required>
-        <button class="btn btn-primary btn-lg w-100 mt-4" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        <input
+          class="form-control form-control-lg"
+          type="password"
+          name="password"
+          id="id_password"
+          autocomplete="current-password"
+          placeholder="Enter your password"
+          required
+        >
+
+        <button
+          class="btn btn-primary btn-lg w-100 mt-4"
+          type="submit"
+        >
+          Sign in <span aria-hidden="true">→</span>
+        </button>
       </form>
-      <div class="secure-note"><span>▣</span> Secure sign-in protected by Django authentication</div>
-      <p class="login-help">Need access? Ask your workspace administrator to create an account.</p>
+
+      <div class="secure-note">
+        <span>▣</span>
+        Secure sign-in protected by Django authentication
+      </div>
+
+      <p class="login-help">
+        Don't have an account?
+        <a href="{% url 'register' %}">Register here</a>
+      </p>
+
     </div>
-    <div class="login-copyright">TeamSpace <span>·</span> A shared space for great work</div>
+
+    <div class="login-copyright">
+      TeamSpace <span>·</span> A shared space for great work
+    </div>
   </div>
+
 </div>
 {% endblock %}
