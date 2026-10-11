@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}{% if is_admin %}Overview{% else %}My tasks{% endif %}{% endblock %}
+{% block content %}
+<div class="welcome-row">
+  <div><span class="eyebrow text-accent">{% if is_admin %}ADMIN WORKSPACE{% else %}YOUR WORKSPACE{% endif %}</span><h2>{% if user.first_name %}Welcome back, {{ user.first_name }}{% else %}Welcome back, {{ user.username }}{% endif %} <span class="wave">✦</span></h2><p class="muted-text">{% if is_admin %}Here's what's happening across your team today.{% else %}A clear view of your work and what to focus on next.{% endif %}</p></div>
+  {% if is_admin %}<a class="btn btn-primary" href="{% url 'task_create' %}">＋ New task</a>{% endif %}
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total tasks</span><span class="stat-icon icon-purple">▦</span></div><div class="stat-number">{{ total_count }}</div><div class="stat-foot">Across your workspace</div></div>
+  <div class="stat-card"><div class="stat-top"><span>To do</span><span class="stat-icon icon-blue">◷</span></div><div class="stat-number">{{ todo_count }}</div><div class="stat-foot">Waiting to get started</div></div>
+  <div class="stat-card"><div class="stat-top"><span>In progress</span><span class="stat-icon icon-orange">↗</span></div><div class="stat-number">{{ progress_count }}</div><div class="stat-foot">Currently being worked on</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon icon-green">✓</span></div><div class="stat-number">{{ completed_count }}</div><div class="stat-foot">Work across the finish line</div></div>
+</div>
+
+<div class="section-heading"><div><h3>{% if is_admin %}Team tasks{% else %}Your task list{% endif %}</h3><p>Keep every task moving forward.</p></div><span class="result-count">{{ tasks|length }} shown</span></div>
+<div class="filter-card">
+  <form method="get" class="filter-form">
+    <div class="search-wrap"><span>⌕</span><input type="search" name="q" value="{{ search }}" placeholder="Search tasks..."></div>
+    <select name="status" class="form-select"><option value="">All statuses</option>{% for value,label in status_choices %}<option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+    <select name="priority" class="form-select"><option value="">All priorities</option>{% for value,label in priority_choices %}<option value="{{ value }}" {% if selected_priority == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+    <button class="btn btn-outline-secondary" type="submit">Filter</button>
+    {% if search or selected_status or selected_priority %}<a class="clear-filter" href="{% url 'dashboard' %}">Clear</a>{% endif %}
+  </form>
+</div>
+
+<div class="task-list">
+  {% for task in tasks %}
+  <article class="task-card">
+    <div class="task-main">
+      <div class="task-title-row"><h4>{{ task.title }}</h4><span class="priority-badge priority-{{ task.priority|lower }}">{{ task.get_priority_display }}</span></div>
+      <p class="task-description">{{ task.description|default:"No description provided."|truncatechars:150 }}</p>
+      <div class="task-meta">
+        {% if is_admin %}<span class="assignee-avatar">{{ task.assigned_to.first_name|default:task.assigned_to.username|slice:":1"|upper }}</span><span>{{ task.assigned_to.get_full_name|default:task.assigned_to.username }}</span><span class="meta-divider">·</span>{% endif %}
+        <span class="{% if task.is_overdue %}overdue-text{% endif %}">◷ {% if task.due_date %}Due {{ task.due_date|date:"M d, Y" }}{% else %}No due date{% endif %}</span>
+        {% if task.is_overdue %}<span class="overdue-pill">Overdue</span>{% endif %}
+      </div>
+    </div>
+    <div class="task-actions">
+      <span class="status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span>
+      <form method="post" action="{% url 'task_status_update' task.id %}" class="status-update-form">
+        {% csrf_token %}
+        <select name="status" class="form-select form-select-sm" aria-label="Update status for {{ task.title }}">
+          {% for value,label in status_choices %}<option value="{{ value }}" {% if task.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+        <button class="btn btn-sm btn-light border" type="submit">Save</button>
+      </form>
+      {% if is_admin %}<div class="admin-task-links"><a href="{% url 'task_edit' task.id %}">Edit</a><a href="{% url 'task_delete' task.id %}" class="delete-link">Delete</a></div>{% endif %}
+    </div>
+  </article>
+  {% empty %}
+  <div class="empty-state"><div class="empty-icon">✓</div><h4>No tasks found</h4><p>{% if search or selected_status or selected_priority %}Try changing your filters to see more tasks.{% elif is_admin %}Create your first task and assign it to a team member.{% else %}You're all caught up. New tasks assigned to you will appear here.{% endif %}</p>{% if is_admin %}<a href="{% url 'task_create' %}" class="btn btn-primary">＋ Create a task</a>{% endif %}</div>
+  {% endfor %}
+</div>
+{% endblock %}

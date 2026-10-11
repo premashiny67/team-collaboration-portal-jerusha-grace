@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Add team member{% endblock %}
+{% block heading %}Add team member{% endblock %}
+{% block content %}
+<div class="form-page-head"><a href="{% url 'members' %}" class="back-link">← Back to team</a><p class="muted-text mt-3">Create a login so a team member can access assigned tasks.</p></div>
+<div class="content-card form-card">
+  <div class="card-title-row"><div><h3>Member account</h3><p>Share the temporary password securely with the member.</p></div><span class="form-icon">♙</span></div>
+  <form method="post" novalidate>{% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="row g-3">
+      {% for field in form %}
+      <div class="col-md-6"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}{% for error in field.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      {% endfor %}
+    </div>
+    <div class="form-actions"><a href="{% url 'members' %}" class="btn btn-light border">Cancel</a><button class="btn btn-primary" type="submit">Create member →</button></div>
+  </form>
+</div>
+{% endblock %}

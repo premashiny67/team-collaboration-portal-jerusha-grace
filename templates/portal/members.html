@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Team members{% endblock %}
+{% block heading %}Team members{% endblock %}
+{% block content %}
+<div class="welcome-row"><div><span class="eyebrow text-accent">YOUR PEOPLE</span><h2>Meet the team</h2><p class="muted-text">Manage the people who make your projects happen.</p></div><a href="{% url 'member_create' %}" class="btn btn-primary">＋ Add member</a></div>
+<div class="content-card">
+  <div class="section-heading inside-card"><div><h3>Members</h3><p>{{ members|length }} active member{{ members|length|pluralize }}</p></div></div>
+  <div class="table-responsive"><table class="table align-middle member-table"><thead><tr><th>Member</th><th>Username</th><th>Email</th><th>Role</th></tr></thead><tbody>
+  {% for profile in members %}<tr><td><div class="member-cell"><span class="member-avatar">{{ profile.user.first_name|default:profile.user.username|slice:":1"|upper }}</span><strong>{{ profile.user.get_full_name|default:profile.user.username }}</strong></div></td><td>{{ profile.user.username }}</td><td>{{ profile.user.email|default:"—" }}</td><td><span class="role-pill">Member</span></td></tr>
+  {% empty %}<tr><td colspan="4" class="text-center py-5 muted-text">No members yet. Add your first team member to get started.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+{% endblock %}

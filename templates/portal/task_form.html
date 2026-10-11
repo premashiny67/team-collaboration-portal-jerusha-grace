@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block heading %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="form-page-head"><a href="{% url 'dashboard' %}" class="back-link">← Back to dashboard</a><p class="muted-text mt-3">Give your team clear ownership, context, and a deadline.</p></div>
+<div class="content-card form-card">
+  <div class="card-title-row"><div><h3>Task details</h3><p>Fields marked with * are required.</p></div><span class="form-icon">▤</span></div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="row g-3">
+      <div class="col-12"><label class="form-label" for="{{ form.title.id_for_label }}">Task title *</label>{{ form.title }}{% for error in form.title.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      <div class="col-12"><label class="form-label" for="{{ form.description.id_for_label }}">Description</label>{{ form.description }}{% for error in form.description.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      <div class="col-md-6"><label class="form-label" for="{{ form.assigned_to.id_for_label }}">Assign to *</label>{{ form.assigned_to }}{% for error in form.assigned_to.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      <div class="col-md-6"><label class="form-label" for="{{ form.due_date.id_for_label }}">Due date</label>{{ form.due_date }}{% for error in form.due_date.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      <div class="col-md-6"><label class="form-label" for="{{ form.priority.id_for_label }}">Priority</label>{{ form.priority }}{% for error in form.priority.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+      <div class="col-md-6"><label class="form-label" for="{{ form.status.id_for_label }}">Status</label>{{ form.status }}{% for error in form.status.errors %}<div class="field-error">{{ error }}</div>{% endfor %}</div>
+    </div>
+    <div class="form-actions"><a href="{% url 'dashboard' %}" class="btn btn-light border">Cancel</a><button class="btn btn-primary" type="submit">{% if task %}Save changes{% else %}Create task{% endif %} →</button></div>
+  </form>
+</div>
+{% endblock %}

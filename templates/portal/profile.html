@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block heading %}My profile{% endblock %}
+{% block content %}
+<div class="welcome-row"><div><span class="eyebrow text-accent">ACCOUNT SETTINGS</span><h2>Your profile</h2><p class="muted-text">Your account details for this workspace.</p></div></div>
+<div class="content-card profile-card">
+  <div class="profile-hero"><div class="profile-avatar">{{ user.first_name|default:user.username|slice:":1"|upper }}</div><div><h3>{{ user.get_full_name|default:user.username }}</h3><p>{{ user.email|default:"No email added" }}</p><span class="role-pill">{% if is_admin %}Admin{% else %}Member{% endif %}</span></div></div>
+  <div class="profile-details"><div><span>Username</span><strong>{{ user.username }}</strong></div><div><span>First name</span><strong>{{ user.first_name|default:"—" }}</strong></div><div><span>Last name</span><strong>{{ user.last_name|default:"—" }}</strong></div><div><span>Account created</span><strong>{{ user.date_joined|date:"M d, Y" }}</strong></div></div>
+  <p class="muted-text small mt-4 mb-0">For account changes or password assistance, contact your workspace administrator.</p>
+</div>
+{% endblock %}

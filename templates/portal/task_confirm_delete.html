@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Delete task{% endblock %}
+{% block heading %}Delete task{% endblock %}
+{% block content %}
+<div class="content-card confirm-card">
+  <div class="danger-icon">!</div><h2>Delete this task?</h2>
+  <p>You're about to permanently delete <strong>{{ task.title }}</strong>. This action cannot be undone.</p>
+  <form method="post">{% csrf_token %}<a href="{% url 'dashboard' %}" class="btn btn-light border">Cancel</a><button type="submit" class="btn btn-danger ms-2">Delete task</button></form>
+</div>
+{% endblock %}
